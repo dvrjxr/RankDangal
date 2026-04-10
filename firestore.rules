@@ -1,0 +1,107 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    // Collection: users
+    // Fields: uid, name, email, phone, region, isPrime, primeExpiry, streak, bestStreak, totalPoints, isAdmin, upi
+    //
+    // Collection: membershipRequests
+    // Fields: uid, name, plan, amount, screenshotUrl, status
+    //
+    // Collection: sundayContests
+    // Fields: id, weekNumber, status, participants, totalPool
+    //
+    // Collection: sundaySubmissions
+    // Fields: uid, name, contestId, score, correct, wrong, timeTaken
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+        ((exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true) ||
+         (request.auth.token.email == "dvrjxr@gmail.com" && request.auth.token.email_verified == true));
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'name']) &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
+             data.uid == request.auth.uid;
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /users/{userId} {
+      allow read: if true;
+      allow create: if isOwner(userId) && isValidUser(request.resource.data) && request.resource.data.get('isAdmin', false) == false;
+      allow update: if isOwner(userId) && (request.resource.data.get('isAdmin', false) == resource.data.get('isAdmin', false) || isAdmin());
+      
+      match /notifications/{notifId} {
+        allow read: if isOwner(userId);
+        allow write: if isOwner(userId) || isAdmin();
+      }
+      
+      match /meta/dailyProgress {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    match /membershipRequests/{requestId} {
+      allow read: if isAdmin() || (isAuthenticated() && resource.data.uid == request.auth.uid);
+      allow create: if isAuthenticated() && request.resource.data.uid == request.auth.uid;
+      allow update: if isAdmin();
+    }
+
+    match /sundayContests/{contestId} {
+      allow read: if true;
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated(); // For participant count updates
+    }
+
+    match /contestJoins/{joinId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && request.resource.data.uid == request.auth.uid;
+    }
+
+    match /sundaySubmissions/{submissionId} {
+      allow read: if isAdmin() || (isAuthenticated() && resource.data.uid == request.auth.uid);
+      allow create: if isAuthenticated() && request.resource.data.uid == request.auth.uid;
+    }
+
+    match /sundayResults/{contestId} {
+      allow read: if true;
+      match /winners/{winnerId} {
+        allow read: if true;
+        allow write: if isAdmin();
+      }
+    }
+
+    match /pyq/{pyqId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /admin/{document=**} {
+      allow read, write: if isAdmin();
+    }
+    
+    match /public/{document=**} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+  }
+}

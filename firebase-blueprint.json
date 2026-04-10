@@ -1,0 +1,171 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Core user data including prime status and stats.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "region": { "type": "string" },
+        "isPrime": { "type": "boolean" },
+        "primeExpiry": { "type": "string", "format": "date-time" },
+        "streak": { "type": "number" },
+        "bestStreak": { "type": "number" },
+        "totalPoints": { "type": "number" },
+        "lastPracticeDate": { "type": "string" },
+        "upi": { "type": "string" },
+        "isAdmin": { "type": "boolean" },
+        "referralCode": { "type": "string" },
+        "referredBy": { "type": "string" },
+        "referralCount": { "type": "number" }
+      },
+      "required": ["uid", "name"]
+    },
+    "MembershipRequest": {
+      "title": "Membership Request",
+      "description": "Pending and historical prime membership payment requests.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "plan": { "type": "string", "enum": ["7days", "30days"] },
+        "amount": { "type": "number" },
+        "screenshotUrl": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "approved", "declined"] },
+        "declineReason": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "SundayContest": {
+      "title": "Sunday Contest",
+      "description": "Metadata for the weekly Sunday contest.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "weekNumber": { "type": "number" },
+        "status": { "type": "string", "enum": ["upcoming", "live", "closed", "result_announced"] },
+        "participants": { "type": "number" },
+        "totalPool": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "SundaySubmission": {
+      "title": "Sunday Submission",
+      "description": "User submission for a specific Sunday contest.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "contestId": { "type": "string" },
+        "score": { "type": "number" },
+        "correct": { "type": "number" },
+        "wrong": { "type": "number" },
+        "timeTaken": { "type": "number" },
+        "answers": { "type": "object" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "SundayWinner": {
+      "title": "Sunday Winner",
+      "description": "Winner details for a specific contest.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "rank": { "type": "number" },
+        "amount": { "type": "number" },
+        "upi": { "type": "string" },
+        "claimed": { "type": "boolean" }
+      }
+    },
+    "PYQ": {
+      "title": "Previous Year Question",
+      "description": "PDF links for previous year papers.",
+      "type": "object",
+      "properties": {
+        "subject": { "type": "string" },
+        "title": { "type": "string" },
+        "pdfUrl": { "type": "string" },
+        "uploadedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "AdminConfig": {
+      "title": "Admin Configuration",
+      "description": "Global settings like QR codes and rank caps.",
+      "type": "object",
+      "properties": {
+        "qr33": { "type": "string" },
+        "qr99": { "type": "string" },
+        "rankCaps": { "type": "object" }
+      }
+    },
+    "AdminStats": {
+      "title": "Admin Statistics",
+      "description": "Aggregated stats for the platform.",
+      "type": "object",
+      "properties": {
+        "totalRevenue": { "type": "number" },
+        "totalMemberships7day": { "type": "number" },
+        "totalMemberships30day": { "type": "number" },
+        "platformEarnings": { "type": "number" }
+      }
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "User-specific alerts.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "type": { "type": "string" },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": { "$ref": "User" },
+      "description": "User profiles"
+    },
+    "/membershipRequests/{requestId}": {
+      "schema": { "$ref": "MembershipRequest" },
+      "description": "Prime membership requests"
+    },
+    "/sundayContests/{contestId}": {
+      "schema": { "$ref": "SundayContest" },
+      "description": "Weekly contests"
+    },
+    "/sundaySubmissions/{submissionId}": {
+      "schema": { "$ref": "SundaySubmission" },
+      "description": "Contest submissions"
+    },
+    "/sundayResults/{contestId}/winners/{winnerId}": {
+      "schema": { "$ref": "SundayWinner" },
+      "description": "Contest winners"
+    },
+    "/pyq/{pyqId}": {
+      "schema": { "$ref": "PYQ" },
+      "description": "Previous year papers"
+    },
+    "/admin/config": {
+      "schema": { "$ref": "AdminConfig" },
+      "description": "Global admin settings"
+    },
+    "/admin/stats": {
+      "schema": { "$ref": "AdminStats" },
+      "description": "Platform stats"
+    },
+    "/contestJoins/{joinId}": {
+      "schema": { "type": "object", "properties": { "uid": { "type": "string" }, "contestId": { "type": "string" }, "joinedAt": { "type": "string", "format": "date-time" } } },
+      "description": "Tracking user participation in contests"
+    },
+    "/users/{uid}/notifications/{notifId}": {
+      "schema": { "$ref": "Notification" },
+      "description": "User notifications"
+    }
+  }
+}

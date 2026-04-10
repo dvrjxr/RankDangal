@@ -1,0 +1,202 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Nunito", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Nunito", ui-sans-serif, system-ui, sans-serif;
+
+  --color-bg-0: var(--bg-0);
+  --color-bg-1: var(--bg-1);
+  --color-bg-2: var(--bg-2);
+  --color-bg-3: var(--bg-3);
+  --color-bg-4: var(--bg-4);
+  --color-bg-5: var(--bg-5);
+
+  --color-t1: var(--t1);
+  --color-t2: var(--t2);
+  --color-t3: var(--t3);
+  --color-t4: var(--t4);
+
+  --color-green: var(--green);
+  --color-green-dk: var(--green-dk);
+  --color-blue: var(--blue);
+  --color-blue-dk: var(--blue-dk);
+  --color-gold: var(--gold);
+  --color-gold-dk: var(--gold-dk);
+  --color-red: var(--red);
+  --color-red-dk: var(--red-dk);
+}
+
+@layer base {
+  :root {
+    /* Backgrounds — Duolingo Light Theme */
+    --bg-0: #ffffff;
+    --bg-1: #f7f7f7;
+    --bg-2: #ffffff;
+    --bg-3: #ffffff;
+    --bg-4: #e5e5e5;
+    --bg-5: #cecece;
+
+    /* Text */
+    --t1: #4b4b4b;
+    --t2: #777777;
+    --t3: #afafaf;
+    --t4: #d0d0d0;
+
+    /* Brand Colors */
+    --green: #58cc02;
+    --green-dk: #58a700;
+    --green-glow: rgba(88, 204, 2, 0.15);
+    --blue: #1cb0f6;
+    --blue-dk: #1899d6;
+    --blue-glow: rgba(28, 176, 246, 0.15);
+    --gold: #ffc800;
+    --gold-dk: #f49000;
+    --gold-glow: rgba(255, 200, 0, 0.15);
+    --orange: #ff9600;
+    --orange-dk: #e58700;
+    --red: #ff4b4b;
+    --red-dk: #ea2b2b;
+    --red-glow: rgba(255, 75, 75, 0.15);
+    --purple: #ce82ff;
+    --purple-dk: #af6ee5;
+    --white: #ffffff;
+    --white-dk: #e5e5e5;
+
+    /* Radius */
+    --r-sm: 12px;
+    --r-md: 16px;
+    --r-lg: 20px;
+    --r-xl: 24px;
+    --r-full: 999px;
+
+    /* Shadows — 3D Duolingo Style */
+    --shadow-sm: 0 2px 0 rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 0 rgba(0,0,0,0.1);
+    --shadow-lg: 0 8px 0 rgba(0,0,0,0.1);
+    --shadow-green: 0 4px 0 var(--green-dk);
+    --shadow-gold: 0 4px 0 var(--gold-dk);
+    --shadow-blue: 0 4px 0 var(--blue-dk);
+
+    /* Transitions */
+    --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+    --t-fast: 0.1s;
+    --t-med: 0.2s;
+  }
+
+  .dark {
+    --bg-0: #131f24;
+    --bg-1: #1a2a31;
+    --bg-2: #131f24;
+    --bg-3: #1a2a31;
+    --bg-4: #37464f;
+    --bg-5: #4b5a65;
+
+    --t1: #ffffff;
+    --t2: #afafaf;
+    --t3: #777777;
+    --t4: #37464f;
+
+    --white: #131f24;
+    --white-dk: #37464f;
+
+    --green-glow: rgba(88, 204, 2, 0.1);
+    --blue-glow: rgba(28, 176, 246, 0.1);
+    --gold-glow: rgba(255, 200, 0, 0.1);
+    --red-glow: rgba(255, 75, 75, 0.1);
+  }
+
+  body {
+    @apply bg-white text-[#4b4b4b] font-body antialiased;
+    background-color: var(--bg-0);
+    color: var(--t1);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans font-extrabold tracking-tight;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply relative flex items-center justify-center gap-2 min-h-[50px] w-full px-6 py-3 rounded-2xl font-sans text-[15px] font-extrabold text-white uppercase tracking-widest transition-all active:translate-y-[4px] active:shadow-none select-none;
+    background-color: var(--green);
+    box-shadow: 0 4px 0 var(--green-dk);
+  }
+
+  .btn-secondary {
+    @apply relative flex items-center justify-center gap-2 min-h-[50px] w-full px-6 py-3 rounded-2xl font-sans text-[15px] font-extrabold uppercase tracking-widest transition-all active:translate-y-[4px] active:shadow-none select-none;
+    color: var(--blue);
+    background-color: var(--white);
+    border: 2px solid var(--white-dk);
+    box-shadow: 0 4px 0 var(--white-dk);
+  }
+
+  .btn-gold {
+    @apply relative flex items-center justify-center gap-2 min-h-[50px] w-full px-6 py-3 rounded-2xl font-sans text-[15px] font-extrabold text-white uppercase tracking-widest transition-all active:translate-y-[4px] active:shadow-none select-none;
+    background-color: var(--gold);
+    box-shadow: 0 4px 0 var(--gold-dk);
+  }
+
+  .btn-blue {
+    @apply relative flex items-center justify-center gap-2 min-h-[50px] w-full px-6 py-3 rounded-2xl font-sans text-[15px] font-extrabold text-white uppercase tracking-widest transition-all active:translate-y-[4px] active:shadow-none select-none;
+    background-color: var(--blue);
+    box-shadow: 0 4px 0 var(--blue-dk);
+  }
+
+  .btn-danger {
+    @apply relative flex items-center justify-center gap-2 min-h-[50px] w-full px-6 py-3 rounded-2xl font-sans text-[15px] font-extrabold text-white uppercase tracking-widest transition-all active:translate-y-[4px] active:shadow-none select-none;
+    background-color: var(--red);
+    box-shadow: 0 4px 0 var(--red-dk);
+  }
+
+  .card {
+    @apply relative overflow-hidden rounded-[var(--r-lg)] border-2 border-[#e5e5e5] transition-all;
+    background: var(--white);
+  }
+
+  .glass {
+    @apply backdrop-blur-xl border-b border-[#e5e5e5];
+    background: rgba(255, 255, 255, 0.95);
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Animations */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+@keyframes flameFlicker {
+  0%, 100% { transform: scale(1) rotate(-2deg); }
+  33% { transform: scale(1.12) rotate(3deg); }
+  66% { transform: scale(0.94) rotate(-1deg); }
+}
+
+.animate-flame {
+  animation: flameFlicker 1.4s ease infinite;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.35s var(--ease-smooth) both;
+}

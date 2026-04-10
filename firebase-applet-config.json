@@ -1,0 +1,10 @@
+{
+  "projectId": "rankdangal",
+  "appId": "1:146747145438:web:7ec7a939bfe8454009164f",
+  "apiKey": "AIzaSyBrskgaUTA7Z50oPmVNZ3gtSDHehSB0e-w",
+  "authDomain": "rankdangal.firebaseapp.com",
+  "firestoreDatabaseId": "(default)",
+  "storageBucket": "rankdangal.firebasestorage.app",
+  "messagingSenderId": "146747145438",
+  "measurementId": ""
+}
